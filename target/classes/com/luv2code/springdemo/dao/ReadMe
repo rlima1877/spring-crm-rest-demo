@@ -1,0 +1,35 @@
+DAO = Data Access Object
+
+Data access objects are used perform CRUD operations on the database.
+
+No business rules should be done in this layer other than the CRUD operations.
+
+The usual approach is to create an interface with all the CRUD method signatures we will be performing on the entity.
+
+Then we create an implementation of that interface with the actual implementation of the methods.
+
+In the implementation we make use of hibernate session factory to reach out to the database for us.
+
+Remember, if we're using a service class like we are here, that service class methods should add the @Transactional annotation to handle database sessions.
+that way we don't have to worry about closing the sessions.
+
+We just have to autowire the SessionFactory object.
+
+	// need to inject the session factory
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+IF we need to do anything with the data coming from the database, we must write a service class. Which acts similar to the DAO classes, but instead it manipulates the data before sending it back
+to the client via the controllers.
+
+Flow of a Client call using Service class:
+
+1) Client initializes a request via the browser to retrieve a customer.
+2) That request enters the designated controller method.
+3) Inside the controller method, it will call the autowired service object to retrieve that object.
+	customerService.getCustomer(customerId);
+4) Inside the CustomerService class getCustomer(customerId) method it will call the DAO CustomerDAOImpl method to actually make the call to the database.
+5) Data is retrieved to the CustomerService callee method.
+6) If it needs to add business rule, here is the right time, otherwise it will just return the data to the controller.
+7) the controller will return the data to the client and Jackson will transform into JSON. 
+8) WALAH!!!

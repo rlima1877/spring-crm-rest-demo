@@ -1,0 +1,23 @@
+Service package.
+
+So, a service method contains all the same methods as the CustomerDAO.
+All the same CRUD operation methods. 
+
+In fact, the interfaces CustomerService AND CustomerDAO contains the exact same method signatures. No differences here.
+
+Why? Because this is the service layer dude. We are the closest to the controller method, since the controller calls us first.
+
+And what do we do?
+Simple -  we just call the DAO to get the data for us, and if needed we massage or in other words, apply business rule to that object/data, then we return it to the controller method to return it.
+Pretty cool huh?
+
+By adding the Service layer, we don't mess with the good OLD CRUD operations in the DAO or add any confusion there. The DAO is just to handle the database to object conversation for CRUD operations,
+nothing else.
+
+By being closest to the controllers, the Controller class will autowire us and make the necessary operations. Which we'll delegate to the DAO, since we'll have the DAO autowired as well. :)
+
+*REMEMBER*
+
+WE NEED TO USE @SERVICE ANNOTATION SO THAT SPRING CAN SEE US.
+AND WE ALSO NEED THE @TRANSACTIONAL FOR EVERY CRUD METHOD. This will handle the sessions wisely.
+We do not need @Transactional at the DAO layer since we're using it here.
